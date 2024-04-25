@@ -1,0 +1,86 @@
+BoxLayout:
+    orientation: 'vertical'
+    spacing: 20
+    padding: [20, 0, 20, 20]
+
+    Label:
+        text: "Bienvenido a Shopper"
+        font_size: 24
+        halign: "center"
+        color: app.theme_cls.text_color
+        id: welcome_label
+
+    MDFlatButton:
+        id: theme_toggle_button
+        text: "Dark mode" if app.theme_cls.theme_style == "Light" else "Light mode"
+        size_hint: None, None
+        size: 150, 50
+        pos_hint: {'center_x': .5}
+        md_bg_color: app.theme_cls.primary_color
+        text_color: app.theme_cls.text_color
+        on_release: app.toggle_dark_mode()
+
+    BoxLayout:
+        orientation: 'horizontal'
+        spacing: 12
+        size_hint_y: None
+        height: 52
+
+        MDTextField:
+            id: article_input
+            hint_text: "Artículo"
+
+        MDTextField:
+            id: quantity_input
+            hint_text: "Cantidad"
+            input_type: "number"
+            size_hint_x: 1
+
+        MDTextField:
+            id: price_input
+            hint_text: "Precio Unitario"
+            input_type: "number"
+            size_hint_x: 1
+
+        Spinner:
+            id: category_spinner
+            text: 'Categoría'
+            values: app.categorias
+            background_color: app.theme_cls.primary_color
+
+
+    MDFloatingActionButton:
+        icon: "plus"
+        on_release: app.add_item(self, article_input, quantity_input, price_input, category_spinner)
+
+
+    ScrollView:
+        MDList:
+            id: list_layout
+
+    BoxLayout:
+        orientation: 'horizontal'
+        spacing: 12
+        size_hint_y: None
+        height: 50
+
+        MDRaisedButton:
+            text: "Limpiar lista"
+            on_release: app.clear_list(self)
+
+        MDRaisedButton:
+            text: "Exportar lista"
+            on_release: app.export_list(self)
+
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint_y: None
+        height: 50
+        padding: [0, 0, 20, 20]
+
+        Label:
+            size_hint_x: 1
+            text: "Total: €0.00"
+            font_size: 20
+            halign: "right"
+            color: app.theme_cls.text_color
