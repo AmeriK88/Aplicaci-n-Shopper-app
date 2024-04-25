@@ -1,5 +1,5 @@
 from kivy.config import Config
-Config.set('kivy', 'window_icon', r'C:\Users\lanza\Desktop\Shoplist\Examples\logo.png')
+Config.set('kivy', 'window_icon', r'C:\Tu\ruta\raíz\del\proyecto\logo.png')
 
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
