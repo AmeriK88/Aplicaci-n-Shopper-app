@@ -21,24 +21,34 @@ import csv
 import re
 
 
+import uuid
+import csv
+from kivy.uix.checkbox import MDCheckbox
 
 class ShoppingListManager:
     def __init__(self):
+        # Inicializa un diccionario vacío para almacenar los elementos de la lista de compras categorizados
         self.category_items = {}
 
     def add_item(self, article, quantity, price_per_unit, category):
         try:
+            # Convierte la cantidad y el precio por unidad a números de punto flotante
             quantity = float(quantity)
             price_per_unit = float(price_per_unit)
+            # Verifica si la cantidad y el precio son valores positivos
             if quantity <= 0 or price_per_unit <= 0:
                 raise ValueError("La cantidad y el precio deben ser números positivos")
         except ValueError as e:
             raise ValueError("Ingrese valores numéricos válidos")
 
+        # Calcula el precio total del artículo
         total_price = quantity * price_per_unit
+        # Formatea el precio total como una cadena con dos decimales y comas para separar los miles
         formatted_price = "{:,.2f}".format(total_price)
 
+        # Genera un ID único para el artículo usando uuid
         article_id = str(uuid.uuid4())
+        # Crea un diccionario que representa el artículo
         item = {
             "id": article_id,
             "article": article,
@@ -46,16 +56,21 @@ class ShoppingListManager:
             "price_per_unit": price_per_unit,
         }
 
+        # Crea un widget de checkbox con KivyMD y lo añade al diccionario del artículo
         checkbox = MDCheckbox(active=True, size_hint_x=None, width=45)
         item["checkbox"] = checkbox
 
+        # Verifica si la categoría ya existe en el diccionario de elementos y añade el artículo
+        # bajo esa categoría, o crea una nueva categoría si no existe
         if category not in self.category_items:
             self.category_items[category] = []
         self.category_items[category].append(item)
 
+        # Devuelve el artículo creado y el precio formateado
         return item, formatted_price
 
     def delete_item(self, article_id):
+        # Itera sobre las categorías y los elementos para encontrar y eliminar el artículo con el ID dado
         for category, items in self.category_items.items():
             for item in items:
                 if item["id"] == article_id:
@@ -64,19 +79,27 @@ class ShoppingListManager:
 
     def export_list(self, selected_items, file_path):
         try:
+            # Calcula el precio total de todos los elementos seleccionados
             total_price = sum(item["quantity"] * item["price_per_unit"] for item in selected_items)
+            # Abre un archivo CSV para escribir la lista de compras
             with open(file_path, "w", newline="", encoding="utf-8") as csvfile:
                 csv_writer = csv.writer(csvfile)
+                # Escribe la primera fila con los encabezados de columna
                 csv_writer.writerow(["Artículo", "Cantidad", "Precio"])
+                # Itera sobre los elementos seleccionados y escribe cada uno en una fila del CSV
                 for item in selected_items:
                     article = item["article"]
                     quantity = item["quantity"]
                     price_per_unit = item["price_per_unit"]
                     csv_writer.writerow([article, quantity, price_per_unit])
+                # Escribe la fila final con el precio total
                 csv_writer.writerow(["Total", "", total_price])
+            # Retorna verdadero si la exportación fue exitosa
             return True
         except Exception as e:
+            # Si hay algún error durante la exportación, eleva una excepción con un mensaje de error
             raise Exception("Error al exportar la lista:", e)
+
 
 
 class ShopperApp(MDApp):
