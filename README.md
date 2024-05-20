@@ -16,7 +16,7 @@ Para ejecutar la aplicación, simplemente ejecuta el script principal main.py:
 
 `"python main.py"´
 
-#Visualización de la aplicación:
+## Visualización de la aplicación:
 
 ![Captura de pantalla 2024-04-25 160645](https://github.com/AmeriK88/Aplicaci-n-Shopper-app/assets/165429251/2cd89443-ccc9-46e1-bb11-dfb53dfe1157)
 ![Captura de pantalla 2024-04-25 160652](https://github.com/AmeriK88/Aplicaci-n-Shopper-app/assets/165429251/87dbc51a-76ba-4410-a6f0-d84d6699d66d)
